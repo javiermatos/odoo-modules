@@ -22,6 +22,11 @@ msgid "Active"
 msgstr "Active"
 
 #. module: account_invoice_tag
+#: model_terms:ir.ui.view,arch_db:account_invoice_tag.account_invoice_tag_view_list
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: account_invoice_tag
 #: model:ir.model,name:account_invoice_tag.model_account_invoice_tag
 msgid "Invoice Tag"
 msgstr "Étiquette de facture"

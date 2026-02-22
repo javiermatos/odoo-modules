@@ -11,7 +11,7 @@
                 <field name="name" />
                 <field name="color" widget="color_picker" />
                 <field name="deprecated" widget="boolean_toggle" />
-                <field name="create_date" readonly="1" />
+                <field name="create_date" string="Created on" readonly="1" />
             </list>
         </field>
     </record>
