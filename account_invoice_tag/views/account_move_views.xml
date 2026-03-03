@@ -56,7 +56,6 @@
                     widget="many2many_tags"
                     options="{'color_field': 'color', 'no_open': True}"
                     invisible="move_type not in ['out_invoice', 'out_refund', 'in_invoice', 'in_refund']"
-                    readonly="state != 'draft'"
                 />
             </xpath>
         </field>
