@@ -1,0 +1,49 @@
+- name: Deploy Odoo modules
+  hosts: all
+
+  vars:
+    user: odoo
+    modules_dir: '/home/{{ user }}/odoo/data/addons/available/development/'
+
+  tasks:
+    - name: copy modules
+      block:
+        - ansible.builtin.file:
+            path: '{{ modules_dir }}'
+            state: directory
+
+        - ansible.posix.synchronize:
+            src: ./
+            dest: '{{ modules_dir }}'
+            delete: yes
+            rsync_opts:
+              - '--exclude=.*'  # Exclude hidden items
+              - '--include=*/'  # Include all directories
+              - '--include=*/**'  # Include contents inside directories
+              - '--exclude=*'  # Exclude root-level files
+
+      become: yes
+      become_user: '{{ user }}'
+
+    - name: enable modules
+      block:
+        - ansible.builtin.find:
+            paths: '{{ modules_dir }}'
+            file_type: directory
+            recurse: no
+          register: module_dirs
+
+        - ansible.builtin.file:
+            src: '{{ item.path }}'
+            dest: '/home/{{ user }}/odoo/data/addons/enabled/{{ item.path | basename }}'
+            state: link
+          loop: '{{ module_dirs.files }}'
+
+      become: yes
+      become_user: '{{ user }}'
+
+    - name: restart Odoo
+      block:
+        - ansible.builtin.systemd_service:
+            name: odoo
+            state: restarted
